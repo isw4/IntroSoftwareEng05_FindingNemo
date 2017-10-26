@@ -20,8 +20,8 @@ echo "Activating ${activate}"
 source ${activate}
 echo "Activated"
 
-pushd brevets
-python3 flask_brevets.py -P ${PORTNUM} &
+pushd coffee
+python3 flask_coffee.py -P ${PORTNUM} &
 pid=$! 
 popd
 echo "***"
