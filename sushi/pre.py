@@ -19,6 +19,7 @@ def process(raw):
     cooked = []
     for line in raw:
         log.debug("Line: {}".format(line))
+        print("Line: {}".format(line))
         line = line.strip()
 
         if len(line) == 0 or line[0] == '#':

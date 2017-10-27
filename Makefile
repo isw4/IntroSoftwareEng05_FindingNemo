@@ -1,5 +1,5 @@
 #
-# Project 4:  Brevet calculator
+# Project 5: Mapping
 #
 # Gnu make and bash are required. 
 #
@@ -19,7 +19,7 @@ env:
 ## Installation
 install: env credentials
 
-credentials: coffee/credentials.ini
+credentials: sushi/credentials.ini
 
 coffee/credentials.ini: 
 	echo "You must manually create credentials.ini"
@@ -36,7 +36,7 @@ stop: 	env credentials
 	bash stop.sh
 
 test:	env
-	($(INVENV) cd coffee; nosetests) 
+	($(INVENV) cd sushi; nosetests) 
 
 
 ##

@@ -2,6 +2,7 @@
 DOCUMENTATION HERE
 """
 
+import flask
 from flask import Flask, url_for, render_template
 import config
 import logging
@@ -17,11 +18,12 @@ CONFIG = config.configuration()
 app.secret_key = CONFIG.SECRET_KEY
 
 app.logger.debug("Getting the list of sushi restaurants")
-flask.g.data = pre.process(CONFIG.POI_FILE)
+rest_data = pre.process(open(CONFIG.POI_FILE))
 
 @app.route("/")
 def index():
-	app.logger.debug("Rendering the main page")
+    flask.g.data = rest_data
+    app.logger.debug("Rendering the main page")
     return render_template('index.html')
 
 #############
