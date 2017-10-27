@@ -5,17 +5,23 @@ DOCUMENTATION HERE
 from flask import Flask, url_for, render_template
 import config
 import logging
+import pre
 
 ###
 # Globals
 ###
 app = Flask(__name__)
+
+app.logger.debug("Getting the configuration")
 CONFIG = config.configuration()
 app.secret_key = CONFIG.SECRET_KEY
 
+app.logger.debug("Getting the list of sushi restaurants")
+flask.g.data = pre.process(CONFIG.POI_FILE)
 
 @app.route("/")
 def index():
+	app.logger.debug("Rendering the main page")
     return render_template('index.html')
 
 #############

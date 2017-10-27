@@ -1,13 +1,129 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Where My Koffi??</title>
+	<title>Finding Nemo</title>
+
+	<!-- JQUERY -->
+	<script 
+		src="https://code.jquery.com/jquery-3.2.1.slim.min.js" 
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" 
+		crossorigin="anonymous"></script>
+
+	<!-- BOOTSTRAP -->
+	<link rel="stylesheet" 
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+		crossorigin="anonymous">
+	
+	<!-- LEAFLET -->
+	<link rel="stylesheet" 
+		href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+   		integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+   		crossorigin=""/>
+	<script 
+		src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+		integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+		crossorigin=""></script>
+
+	<!-- ESRI LEAFLET: A [REVERSE] GEOCODING LIBRARY -->
+    <script 
+	    src="https://unpkg.com/esri-leaflet@2.1.1/dist/esri-leaflet.js"
+	    integrity="sha512-ECQqaYZke9cSdqlFG08zSkudgrdF6I1d8ViSa7I3VIszJyVqw4ng1G8sehEXlumdMnFYfzY0tMgdQa4WCs9IUw=="
+	    crossorigin=""></script>
+    <link rel="stylesheet" 
+		href="https://unpkg.com/esri-leaflet-geocoder@2.2.6/dist/esri-leaflet-geocoder.css"
+	    integrity="sha512-v5YmWLm8KqAAmg5808pETiccEohtt8rPVMGQ1jA6jqkWVydV5Cuz3nJ9fQ7ittSxvuqsvI9RSGfVoKPaAJZ/AQ=="
+	    crossorigin="">
+	<script 
+		src="https://unpkg.com/esri-leaflet-geocoder@2.2.6/dist/esri-leaflet-geocoder-debug.js"
+    	crossorigin=""></script>
+
+  	<!-- AWESOMEMARKERS: A LEAFLET MARKERS LIBRARY -->
+	<link rel="stylesheet" 
+		href="../static/leaflet-awesome-markers/leaflet.awesome-markers.css">
+
+	<!-- THIS IS OUR OWN CSS -->
+	<link rel="stylesheet" type="text/css" 
+		href="../static/sushi.css">
 </head>
 <body>
-	<h1>Where my Koffi??</h1>
-
-	<div>
-		<h2>Map goes here</h2>
+	<div class="jumbotron"><h1>Finding Nemo</h1></div>
+	<div class="container map-container">
+		<h2>All the fresh Nemos</h2>
+		<div id="mapid"></div>
 	</div>
+	
+	<!-- ALSO BOOTSTRAP -->
+	<script 
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
+		crossorigin="anonymous"></script>
+
+	<!-- AWESOMEMARKERS(USES BOOTSTRAP) -->
+	<script 
+		src="../static/leaflet-awesome-markers/leaflet.awesome-markers.min.js"></script>
+
+	<!-- THIS IS OUR OWN JS -->
+	<script type="text/javascript">
+		// Default coordinates for the city of Eugene
+		var def_eugene = [44.0521, -123.0868, 14]
+
+		// Markers to place on the map
+		var here = L.AwesomeMarkers.icon({
+		    icon: 'user',
+		    prefix: 'glyphicon',
+		    markerColor: 'green'
+		})
+		var sushi = L.AwesomeMarkers.icon({
+		    icon: 'grain',
+		    prefix: 'glyphicon',
+		    markerColor: 'darkred'
+		})
+
+		// Event listener for successfully finding the user location
+		function onLocationFound(e) {
+			console.log("user location found");
+			mymap = mymap.setView(e.latlng, def_eugene[2]);
+			geocodeService.reverse().latlng(e.latlng).run(function(error, result) {
+		    	L.marker(result.latlng, {icon: here}).addTo(mymap).bindPopup(result.address.Match_addr).openPopup()
+		    });
+			//L.marker(e.latlng, {icon: here}).addTo(mymap);
+		}
+
+		// Event listener for failing to find user location
+		function onLocationError(e) {
+			console.log("user location not found");
+			mymap = mymap.setView([def_eugene[0], def_eugene[1]], def_eugene[2]);
+		}
+
+		// Initialise geocoding service
+		var geocodeService = L.esri.Geocoding.geocodeService();
+
+		// Initialise the map
+		var mymap = L.map('mapid').fitWorld();
+
+		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			id: 'mapbox.streets',
+			accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+		}).addTo(mymap);
+
+		// Add event listeners
+		mymap.on('locationfound', onLocationFound)
+		mymap.on('locationerror', onLocationError)
+
+		// Finding user location
+		mymap.locate({maxZoom: def_eugene[2]})
+
+		// Geocoding restaurants
+		L.esri.Geocoding.geocode().text('3215 W 11th Ave, Eugene, OR, 97402').run(function(err, results, response){
+		  	console.log(results.results[0].text);
+		  	L.marker(results.results[0].latlng, {icon: sushi}).addTo(mymap).bindPopup("Sushi Island Japanese Restaurant");
+		});
+	</script>
+
 </body>
 </html>

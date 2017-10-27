@@ -1,0 +1,17 @@
+#
+# Data file containing the data of sushi restaurants in Eugene, OR
+# Data is organized into fields separated by ";"
+#
+# Address;Description
+#
+
+3215 W 11th Ave, Eugene, OR, 97402    ; Sushi Island Japanese Restaurant
+541 Blair Blvd, Eugene, OR, 97402     ; Mame
+201 W Broadway, Eugene, OR, 97401     ; Tokyo Tonkatsu
+5 E 8th Ave, Eugene, OR, 97401        ; Sushi Ya
+898 Pearl St, Eugene, OR, 97401       ; 541 Sushi Bar
+199 E 5th Ave #7, Eugene, OR, 97401   ; Sushi Station Japanese Restaurant
+30 E Broadway, Eugene, OR, 97401      ; Sushi Seoul
+1167 Willamette St, Eugene, OR, 97401 ; Makoto Japanese Restaurant
+1341 Patterson St, Eugene, OR, 97401  ; Sushi Island Restaurant
+750 E 13th Ave, Eugene, OR 97401      ; Duck Sushi
