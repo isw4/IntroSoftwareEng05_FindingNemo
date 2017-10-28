@@ -47,7 +47,10 @@
 		href="../static/sushi.css">
 </head>
 <body>
-	<div class="jumbotron"><h1>Finding Nemo</h1></div>
+	<div class="jumbotron">
+		<h1>Finding Nemo</h1>
+		<p class="lead">Finding sushi restaurants in Eugene,OR</p>
+	</div>
 	<div class="container map-container">
 		<h2>All the fresh Nemos</h2>
 		<div id="mapid"></div>
@@ -108,7 +111,7 @@
 				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
 			id: 'mapbox.streets',
-			accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+			accessToken: '{{ g.key }}'
 		}).addTo(mymap);
 
 		// Add event listeners
@@ -120,10 +123,10 @@
 
 		// Geocoding restaurants
 		{% for entry in g.data %}
-			L.esri.Geocoding.geocode().text({{ entry.address }}}).run(function(err, results, response){
+			L.esri.Geocoding.geocode().text("{{ entry.address }}").run(function(err, results, response){
 			  	console.log(results.results[0].text.concat(" found"));
-			  	L.marker(results.results[0].latlng, {icon: sushi}).addTo(mymap).bindPopup({{ entry.description }});
-			});
+			  	L.marker(results.results[0].latlng, {icon: sushi}).addTo(mymap).bindPopup("{{ entry.description }}");
+			})
 		{% endfor %}
 		
 	</script>

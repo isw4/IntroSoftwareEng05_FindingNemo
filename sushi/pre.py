@@ -18,17 +18,16 @@ def process(raw):
 
     cooked = []
     for line in raw:
-        log.debug("Line: {}".format(line))
-        print("Line: {}".format(line))
         line = line.strip()
+        log.debug("Line: {}".format(line))
 
         if len(line) == 0 or line[0] == '#':
             log.debug("Skipping line...")
             continue
         
         parts = line.split(';')
-        log.debug("appending entry...")
-        cooked.append({'address':parts[0] , 'description':parts[1]})
+        log.debug("Appending entry with address: {}".format(parts[0]))
+        cooked.append({'address':parts[0].strip() , 'description':parts[1].strip()})
 
     return cooked
 
