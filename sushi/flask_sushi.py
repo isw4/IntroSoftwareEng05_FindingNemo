@@ -5,7 +5,6 @@ DOCUMENTATION HERE
 import flask
 from flask import Flask, url_for, render_template
 import config
-from secrets import MAP_KEY
 import logging
 import pre
 
@@ -24,7 +23,7 @@ rest_data = pre.process(open(CONFIG.POI_FILE))
 @app.route("/")
 def index():
     flask.g.data = rest_data
-    flask.g.key = MAP_KEY
+    flask.g.key = CONFIG.MAP_KEY
     app.logger.debug("Rendering the main page")
     return render_template('index.html')
 
