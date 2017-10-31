@@ -90,13 +90,20 @@
 			geocodeService.reverse().latlng(e.latlng).run(function(error, result) {
 		    	L.marker(result.latlng, {icon: here}).addTo(mymap).bindPopup(result.address.Match_addr).openPopup()
 		    });
-			//L.marker(e.latlng, {icon: here}).addTo(mymap);
 		}
 
 		// Event listener for failing to find user location
 		function onLocationError(e) {
 			console.log("user location not found");
 			mymap = mymap.setView([def_eugene[0], def_eugene[1]], def_eugene[2]);
+		}
+
+		// Event listener for user clicking on the map
+		function onMapClick(e) {
+			console.log("user clicked on the map");
+			geocodeService.reverse().latlng(e.latlng).run(function(error, result) {
+		    	L.marker(result.latlng, {icon: here}).addTo(mymap).bindPopup(result.address.Match_addr).openPopup()
+		    });
 		}
 
 		// Initialise geocoding service
@@ -115,8 +122,9 @@
 		}).addTo(mymap);
 
 		// Add event listeners
-		mymap.on('locationfound', onLocationFound)
-		mymap.on('locationerror', onLocationError)
+		mymap.on('locationfound', onLocationFound);
+		mymap.on('locationerror', onLocationError);
+		mymap.on('click', onMapClick);
 
 		// Finding user location
 		mymap.locate({maxZoom: def_eugene[2]})
